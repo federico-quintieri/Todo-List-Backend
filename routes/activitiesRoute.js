@@ -31,7 +31,10 @@ router.get("/:id", async (req, res) => {
 // STORE
 router.post("/", async (req, res) => {
   try {
-    await db.query_Store("Jason", "2025-05-05");
+    // Destrutturo property nome scadenza di oggetto passato da front-end
+    const { nome, scadenza } = req.body;
+    // Queste variabili le uso nel metodo che invia la query di inserimento row
+    await db.query_Store(nome, scadenza);
     res.json("Inserita row in DB, controlla");
   } catch (error) {
     console.error("Error inserting row:", error);
