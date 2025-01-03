@@ -37,11 +37,17 @@ async function query_Show(id) {
 
 // Inserisce una row
 async function query_Store(nome, scadenza) {
-  await pool.query(`INSERT INTO activities(nome,scadenza) VALUES(?,?)`, [
-    nome,
-    scadenza,
-  ]);
+  const [result] = await pool.query(
+    `INSERT INTO activities(nome,scadenza) VALUES(?,?)`,
+    [nome, scadenza]
+  );
+  return result.insertId; // Restituisci l'ID appena creato
+}
+
+// Cancella una row
+async function query_Delete(id) {
+  await pool.query(`DELETE FROM activities WHERE ID = ?`, [id]);
 }
 
 // 5 Esporto queste funzioni in un oggetto
-module.exports = { query_Index, query_Show, query_Store };
+module.exports = { query_Index, query_Show, query_Store, query_Delete };

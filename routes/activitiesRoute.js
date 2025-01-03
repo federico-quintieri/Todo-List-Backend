@@ -34,10 +34,22 @@ router.post("/", async (req, res) => {
     // Destrutturo property nome scadenza di oggetto passato da front-end
     const { nome, scadenza } = req.body;
     // Queste variabili le uso nel metodo che invia la query di inserimento row
-    await db.query_Store(nome, scadenza);
-    res.json("Inserita row in DB, controlla");
+    const insertId = await db.query_Store(nome, scadenza); // Ottieni l'ID
+    res.json("Inserita row in DB, controlla"); // Invia oggetto completo
   } catch (error) {
     console.error("Error inserting row:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// DELETE
+router.delete("/:id", async (req, res) => {
+  const id = parseInt(req.params.id);
+  try {
+    await db.query_Delete(id);
+    res.json({ message: "Activity deleted succesfully" });
+  } catch (error) {
+    console.error("Error deleting activity:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
