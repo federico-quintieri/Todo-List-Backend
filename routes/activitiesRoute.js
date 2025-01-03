@@ -18,7 +18,14 @@ router.get("/", async (req, res) => {
 
 // SHOW
 router.get("/:id", async (req, res) => {
-  res.json("Endpoint show");
+  const id = parseInt(req.params.id);
+  try {
+    const row = await db.query_Show(id);
+    res.json(row);
+  } catch (error) {
+    console.error("Error in show endpoint", error);
+    res.status(500).json("Internal error in server");
+  }
 });
 
 // STORE
